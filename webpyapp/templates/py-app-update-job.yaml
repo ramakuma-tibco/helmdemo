@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: update-app-job
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "2"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: update-app
+        image: bash
+        command: ["sh",  "-c", "wget https://raw.githubusercontent.com/pranay-tibco/py-flask/demo-k8s-day-to-day/app.py -O /opt/app.py"]
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /opt
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: pyapp-pv-claim
+      restartPolicy: Never
+  backoffLimit: 4
