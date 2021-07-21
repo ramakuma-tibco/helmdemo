@@ -1,0 +1,32 @@
+environments:
+  default:
+    values:
+    - environment/pywebapp.yaml.gotmpl
+
+helmDefaults:
+  tillerless: true
+  #kubeContext: dev.ibi.local
+  cleanupOnFail: true
+  wait: false
+  timeout: 60
+  recreatePods: true
+  force: false
+  historyMax: 10
+  createNamespace: true
+
+repositories:
+- name: incubator
+  url: https://charts.helm.sh/incubator 
+
+helmfiles:
+- path: create-pv/helmfile.pv.yaml
+  values:
+  - {{ toYaml .Environment.Values | nindent 4 }}  
+  - VolumeClaim: {{ .Environment.Values.storage.VolumeClaim }}
+    storageClass: {{ .Environment.Values.storage.storageClass }}
+    VolumeCapacity: {{ .Environment.Values.storage.VolumeCapacity }}
+
+releases:
+- name: webpyapp
+  chart: webpyapp
+  wait: true

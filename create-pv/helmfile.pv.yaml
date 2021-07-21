@@ -1,0 +1,8 @@
+releases:
+- name: create-pv
+  chart: incubator/raw
+  version: 0.2.3
+  createNamespace: false
+  wait: true
+  values:
+  - values-template-pv.yaml

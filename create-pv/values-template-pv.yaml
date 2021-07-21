@@ -1,0 +1,14 @@
+templates:
+### Create resulting PVC for dynamic provisoining
+- |
+  apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: {{ .Values.VolumeClaim }}
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    storageClassName: {{ .Values.storageClass }}
+    resources:
+       requests:
+         storage: {{ .Values.VolumeCapacity }}
