@@ -5,7 +5,11 @@ releases:
 - name: create-pv
   chart: incubator/raw
   version: 0.2.3
-  createNamespace: false
+  namespace: helm-demo
+  createNamespace: true
   wait: true
   values:
+  - VolumeClaim: {{ .Environment.Values.VolumeClaim }}
+    storageClass: {{ .Environment.Values.storageClass }}
+    VolumeCapacity: {{ .Environment.Values.VolumeCapacity }}
   - values-template-pv.yaml
