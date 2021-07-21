@@ -7,7 +7,7 @@ releases:
   version: 0.2.3
   namespace: helm-demo
   createNamespace: true
-  wait: true
+  wait: false
   values:
   - VolumeClaim: {{ .Environment.Values.VolumeClaim }}
     storageClass: {{ .Environment.Values.storageClass }}
